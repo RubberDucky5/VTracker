@@ -1,3 +1,5 @@
+import *  as CLIMB from "./climbManager.js";
+
 function registerServiceWorker () {
     if (!('serviceWorker' in navigator)) return;
     navigator.serviceWorker.register('sw.js');
@@ -6,12 +8,65 @@ registerServiceWorker();
 
 // Test For mobile
 if(/iPhone|Android/i.test(navigator.userAgent)) {
-    document.getElementById("click").innerHTML = "Tap!";
+    // document.getElementById("click").innerHTML = "Tap!";
+}
+ 
+function reload () {
+    let root = $("#root");
+
+    append($("body"), '<div id="climbs"></climbs>');
+
+    let tempdata = [
+        new CLIMB.ClimbData("Top Rope", "5.10-",),
+        new CLIMB.ClimbData("Top Rope", "5.11",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+        new CLIMB.ClimbData("Boulder", "V3",),
+    ]
+
+    buildClimbs(tempdata);
+}
+window.addEventListener('load', reload);
+
+function buildClimbs (data) {
+    let root = $("#climbs");
+    root.innerHTML = "";
+
+    append(root, `
+        <div id="addbutton" class="climbs__add">
+            <h2>+</h2>
+        </div>`);
+
+    for (let c of data) {
+        append(root, `
+        <div id="${c.uuid}" class="climbs__climb">
+            <h2>${c.grade}</h2>
+            <p class="small">${
+                c.type + " | " + (c.name == "" ?  "" : c.name + " | ") + new Intl.DateTimeFormat('default', {month: '2-digit', day: '2-digit'}).format(new Date(c.date))
+            }</p>
+        </div>`);
+    }
 }
 
-let clicks = 0;
+// Bind for making an element and from html and appending it to an element
+function append( parent, html ) {
+    let out = document.createElement("div");
+    parent.appendChild(out);
+    out.outerHTML = html;
+}
 
-document.addEventListener('click', (e) => {
-    clicks++;
-    document.getElementById("click").innerHTML = clicks;
-});
+function $ ( selector ) {
+    return document.querySelector(selector);
+}

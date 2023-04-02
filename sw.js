@@ -7,7 +7,7 @@ let assets = [
 
 self.addEventListener("install", installEvent => {
     installEvent.waitUntil(
-      caches.open('static-templatepwa').then(cache => {
+      caches.open('static-vtracker').then(cache => {
         cache.addAll(assets)
       })
     )
