@@ -48,6 +48,11 @@ function buildClimbs (data) {
         <div id="addbutton" class="climbs__add">
             <h2>+</h2>
         </div>`);
+    
+    $("#addbutton").addEventListener("click", () => {
+        document.location.href = './add';
+        console.log("tes");
+    });
 
     for (let c of data) {
         append(root, `

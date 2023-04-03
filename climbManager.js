@@ -49,7 +49,7 @@ const Grades = {
         "8c+",
         "9a",
     ],
-    VScale: [
+    V_Scale: [
         "VB",
         "V0",
         "V1",

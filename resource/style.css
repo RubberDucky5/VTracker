@@ -23,4 +23,5 @@ body {
     color: #ddd;
     border: 1px solid #eee;
     /* height: 100px; */
+    user-select: none;
 }
