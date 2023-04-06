@@ -21,6 +21,37 @@ class ClimbData {
     }
 }
 
+class StorageInterface {
+    static LOCAL_KEY = "climbstorage";
+
+    static addClimb(climb) {
+        let state = this.getClimbs();
+
+        state.climbs.push(climb);
+
+        window.localStorage.setItem(this.LOCAL_KEY, JSON.stringify(state));
+    }
+    
+    static getClimbs () {
+        if (window.localStorage.getItem(this.LOCAL_KEY) == null) {
+            window.localStorage.setItem(this.LOCAL_KEY, JSON.stringify({climbs:[]}));
+        }
+
+        return JSON.parse(window.localStorage.getItem(this.LOCAL_KEY));
+    }
+    static clearData () {
+        window.localStorage.setItem(this.LOCAL_KEY, JSON.stringify({climbs:[]}));
+    }
+}
+
+const Types = [
+    "Boulder",
+    "Top Rope",
+    "Lead",
+    "Auto Belay",
+    "Trad",
+];
+
 const Grades = {
     French: [
         "1",
@@ -134,4 +165,6 @@ const Grades = {
     ],
 }
 
-export {ClimbData, Grades};
+
+
+export {ClimbData, Grades, Types, StorageInterface};

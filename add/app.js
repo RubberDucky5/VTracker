@@ -16,16 +16,54 @@ function reload () {
 
     // append($("body"), '<div id="climbs"></climbs>');
 
-    append(root, `<input type="number"></input>`);
+    // append(root, `<input type="number"></input>`);
 
-    append(root, `
-    <select size="2">
-        <option>Test</option>
-        <option>Test again</option>
-        <option>T</option>
-    </select>
-    `);
+    // alert(JSON.stringify(CLIMB));
+
+    append(root, `<p>Grade System:</p>`);
+    let gradeSys = `<select id="gradesys">`;
+    for(let g of Object.keys(CLIMB.Grades)) {
+        gradeSys+= `<option>${g.replace(/_/gu, " ")}</option>`;
+    }
+    gradeSys+=`</select>`;
+    append(root, gradeSys);
+
+    append(root,  `<p>Grade:</p>`);
+    append(root, `<select id="grade"></select>`);
+    let gradeSystemElement = document.getElementById("gradesys");
+    let gradesElement = document.getElementById("grade");
     
+    let updateGrades;
+
+    gradeSystemElement.addEventListener("change", updateGrades = () => {
+        let grades = ``;
+        for(let g of CLIMB.Grades[gradeSystemElement.value.replace(/\s/, "_")]) {
+            grades += `<option>${g}</option>`
+        }
+        gradesElement.innerHTML = grades;
+    });
+
+    updateGrades();
+
+    append(root, `<p>Type:</p>`);
+    let climbType = `<select id="climbtype">`;
+    for(let g of CLIMB.Types) {
+        climbType += `<option>${g}</option>`;
+    }
+    climbType +=`</select>`;
+    append(root, climbType);
+
+    let climbTypeElement = $("#climbtype");
+
+    append(root, `<br>`);
+    append(root, `<button id="btn_addition">Add!</button>`);
+
+    $("#btn_addition").addEventListener("click", () => {
+        CLIMB.StorageInterface.addClimb(new CLIMB.ClimbData(climbTypeElement.value, gradesElement.value, gradeSystemElement.value));
+        window.location.href = "../";
+    });
+
+    // alert(JSON.stringify(CLIMB.StorageInterface.getClimbs(), null, 4));
 }
 window.addEventListener('load', reload);
 

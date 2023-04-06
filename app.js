@@ -16,27 +16,14 @@ function reload () {
 
     append($("body"), '<div id="climbs"></climbs>');
 
-    let tempdata = [
-        new CLIMB.ClimbData("Top Rope", "5.10-",),
-        new CLIMB.ClimbData("Top Rope", "5.11",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-        new CLIMB.ClimbData("Boulder", "V3",),
-    ]
+    // let climbdata = [];
+    let climbdata = CLIMB.StorageInterface.getClimbs().climbs;
 
-    buildClimbs(tempdata);
+    climbdata.sort((a, b) => {
+            return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+
+    buildClimbs(climbdata);
 }
 window.addEventListener('load', reload);
 
@@ -51,10 +38,24 @@ function buildClimbs (data) {
     
     $("#addbutton").addEventListener("click", () => {
         document.location.href = './add';
-        console.log("tes");
     });
 
+    if(data == []) {
+        // Dirty
+        append(root, `
+        <div class="climbs__empty">
+            <h2>No Climbs Yet</h2>
+        </div>`);
+        return;
+    }
+
+    let lastd = 0;
     for (let c of data) {
+        // if(lastd != new Date(c).getDate()){
+        //     lastd = new Date(c).getDate();
+
+        //     append(root, `<hr class="daydiv">`);
+        // }
         append(root, `
         <div id="${c.uuid}" class="climbs__climb">
             <h2>${c.grade}</h2>
